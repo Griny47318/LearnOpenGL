@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+#include "Shader.h"
 GLint glWidth = 800;
 GLint glHeight = 600;
 
@@ -24,7 +25,7 @@ GLuint indices[] = {
 };
 
 //Vertex shader
-const char* vertexShaderSorce =
+/*const char* vertexShaderSorce =
 "#version 460 core\n"
 "layout (location = 0) in vec3 position;\n"
 "layout (location = 1) in vec3 color;\n"
@@ -41,6 +42,7 @@ const char* fragmentShaderSorce =
 "void main(){\n"
 "color  = vec4(vertexColor, 1.0f);\n"
 "}\n";
+*/
 
 const char* fragmentShaderSorce2 =
 "#version 460 core\n"
@@ -114,7 +116,7 @@ int main(void)
    
 
     //Create, set and compailer Vertex Shader
-    GLuint vertexShader;
+   /* GLuint vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSorce, NULL);
     glCompileShader(vertexShader);
@@ -142,7 +144,7 @@ int main(void)
         glGetShaderInfoLog(fragmentShader, 512, NULL, infolog);
         std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infolog << std::endl;
     }
-
+    
 
     GLuint fragmentShader2;
     fragmentShader2 = glCreateShader(GL_FRAGMENT_SHADER);
@@ -194,7 +196,9 @@ int main(void)
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
     glDeleteShader(fragmentShader2);
+    */
 
+    Shader shader("shader.vs", "shader.fs");
 
     // vertex buffer objects memory GPU
     GLuint VBO1;
@@ -237,7 +241,7 @@ int main(void)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);
 
-    
+    std::string temp = "temp";
 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     /* Loop until the user closes the window */
@@ -247,13 +251,14 @@ int main(void)
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shaderProgram1);
+        shader.Use();
+        shader.SetFloat(temp, 0.3f);
         glBindVertexArray(VAO1);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        glUseProgram(shaderProgram2);
+        //glUseProgram(shaderProgram2);
 
-        GLfloat timeValue = glfwGetTime();
+       /* GLfloat timeValue = glfwGetTime();
         GLfloat greenValue = (sin(timeValue) / 2) + 0.5;
         GLint vertexColorLocation2 = glGetUniformLocation(shaderProgram2, "ourColor2");
         
